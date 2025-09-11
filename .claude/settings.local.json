@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(dir)",
+      "Bash(rd:*)",
+      "Bash(tree:*)",
+      "Bash(pip install:*)",
+      "Bash(del encoding_script.py)",
+      "Bash(ren:*)",
+      "Bash(dir:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
