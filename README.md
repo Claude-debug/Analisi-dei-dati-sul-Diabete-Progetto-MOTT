@@ -1,466 +1,345 @@
-# Advanced Diabetes Data Processing Pipeline
+# Diabetes Hospital Readmission Prediction Pipeline
 
-## Overview
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)](https://scikit-learn.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-1.0.0-red.svg)](https://github.com/your-repo/diabetes-pipeline)
 
-A comprehensive data science pipeline for analyzing diabetes patient data using advanced preprocessing, intelligent categorical encoding, and statistical modeling techniques. This project focuses on developing robust predictive models for hospital readmission risk assessment in diabetic patients.
+A complete data science pipeline for predicting hospital readmission risk in diabetic patients. This project transforms raw medical data into actionable insights through advanced statistical analysis, feature selection, and machine learning models.
 
-## Project Objectives
+## Table of Contents
 
-- **Clinical Prediction**: Develop models to predict hospital readmission risk for diabetic patients
-- **Data Quality**: Implement robust preprocessing pipeline maintaining clinical data integrity  
-- **Advanced Encoding**: Apply state-of-the-art categorical encoding strategies optimized for healthcare data
-- **Statistical Analysis**: Support comprehensive statistical modeling and machine learning approaches
-- **Reproducibility**: Ensure full reproducibility with documented methodologies and version control
+- [Project Overview](#project-overview)
+- [Pipeline Architecture](#pipeline-architecture)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Script Documentation](#script-documentation)
+- [Data Flow](#data-flow)
+- [Results](#results)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Technical Architecture
+## Project Overview
+
+### Objective
+Develop a statistically validated machine learning model to predict 30-day hospital readmission risk for diabetic patients, enabling healthcare providers to implement targeted interventions and improve patient outcomes.
+
+### Key Features
+- **Automated Data Cleaning**: Progressive 3-stage data preprocessing pipeline
+- **Statistical Feature Selection**: Multi-methodology analysis (Chi-square, T-tests, Mutual Information)
+- **Machine Learning**: Logistic regression with performance validation
+- **Clinical Interpretability**: Feature importance analysis with medical context
+- **Production Ready**: Serialized models and scalers for deployment
+
+### Dataset
+- **Source**: Hospital discharge records of diabetic patients
+- **Size**: 101,766 initial records → 68,490 clean records
+- **Features**: 50 initial → 32 statistically significant features
+- **Target**: Binary classification (readmitted/not readmitted within 30 days)
+
+## Pipeline Architecture
 
 ```
 Progetto_mott/
 ├── database/
-│   └── diabetic_data.csv                           # Raw dataset (101,766 patients)
+│   └── diabetic_data.csv                    # Raw dataset (101,766 patients)
 ├── outputs/
-│   ├── cleaned_data/
-│   │   ├── diabetes_clean_no_encoding.csv          # [37,764 × 40] Preprocessed data
-│   │   ├── diabetes_regression_ready.csv           # [30,211 × 21] ML-ready with feature selection
-│   │   └── diabetes_ml_arrays.npz                  # NumPy arrays for ML models
-│   ├── encoded/
-│   │   ├── diabetes_smart_onehot.csv               # [37,764 × 84] Intelligent one-hot encoding
-│   │   ├── diabetes_robust_target.csv              # [37,764 × 40] Cross-validation target encoding
-│   │   ├── diabetes_advanced_encoding.csv          # [37,764 × 53] Binary + hashing methods
-│   │   ├── diabetes_ensemble_encoding.csv          # [37,764 × 76] Adaptive optimal encoding
-│   │   └── encoding_analysis_report.csv            # [29 × 7] Detailed encoding analysis
-│   └── regression_results/
-│       ├── model_comparison_report.csv             # [3 × 4] Model performance comparison
-│       ├── feature_importance_report.csv           # [37 × 2] Feature importance rankings
-│       └── regression_recommendations.txt          # Clinical recommendations and insights
-├── diabetes_data_cleaner.py                        # Core preprocessing pipeline
-├── encoding_pipeline.py                            # Advanced encoding pipeline  
-├── diabetes_regression_analysis.py                 # Complete regression analysis
-├── requirements.txt                                # Dependencies specification
-└── README.md                                       # This documentation
+│   ├── datasets_clean/                      # Progressive data cleaning
+│   │   ├── first_clean/
+│   │   │   └── diabetes_clean.csv           # [69,668 × 62] Basic preprocessing
+│   │   ├── second_clean/
+│   │   │   └── diabetes_clean_filtered.csv  # [68,490 × 59] Filtered demographics
+│   │   └── third_clean/
+│   │       ├── diabetes_ml_ready.csv        # [68,490 × 33] ML-ready dataset
+│   │       └── feature_selection_report.txt # Feature selection methodology
+│   ├── dataset_pvalue/                      # Statistical analysis results
+│   │   ├── analisi_significativita_completa.csv  # Complete statistical analysis
+│   │   └── selected_features.txt            # List of significant features
+│   └── ml_models/                           # Trained models and results
+│       ├── logistic_model.pkl               # Trained logistic regression model
+│       ├── scaler.pkl                       # Feature preprocessing scaler
+│       ├── metrics.csv                      # Model performance metrics
+│       ├── feature_importance.csv           # Feature importance rankings
+│       ├── model_summary.txt                # Human-readable model report
+│       └── model_performance.png            # Performance visualizations
+├── pulizia_dataset.py                       # Step 1: Raw data preprocessing
+├── rimozione_ulteriori_filtri.py            # Step 2: Demographic filtering
+├── significativita.py                       # Step 3: Statistical feature analysis
+├── selezione_features_ml.py                 # Step 4: ML dataset preparation
+├── modello_regressione_logistica.py         # Step 5: Model training and evaluation
+├── requirements.txt                         # Python dependencies
+└── README.md                                # This documentation
 ```
 
-## Installation & Setup
+## Installation
 
 ### Prerequisites
+- Python 3.8 or higher
+- Git (for cloning the repository)
 
-Ensure Python 3.8+ is installed, then install dependencies:
-
+### Clone the Repository
 ```bash
-# Install core requirements
+# Clone the repository
+git clone https://github.com/your-username/diabetes-readmission-pipeline.git
+
+# Navigate to the project directory
+cd diabetes-readmission-pipeline
+
+# Verify the project structure
+ls -la
+```
+
+### Install Dependencies
+```bash
+# Install required packages
 pip install -r requirements.txt
 
-# Or install manually
-pip install pandas>=2.0.0 numpy>=1.24.0 scikit-learn>=1.3.0 category-encoders>=2.6.0
+# Verify installation
+python -c "import pandas, numpy, sklearn, scipy, matplotlib, seaborn; print('All dependencies installed successfully')"
 ```
 
-### Quick Start
+### Verify Setup
+```bash
+# Check if the raw dataset exists
+ls database/diabetic_data.csv
+
+# Create output directories (will be created automatically by scripts)
+mkdir -p outputs/{datasets_clean/{first_clean,second_clean,third_clean},dataset_pvalue,ml_models}
+```
+
+## Quick Start
+
+### Complete Pipeline Execution
+Run the entire pipeline with these commands in sequence:
 
 ```bash
-# 1. Clone/download the project
-cd Progetto_mott
+# Step 1: Raw data preprocessing (removes duplicates, handles missing values)
+python pulizia_dataset.py
 
-# 2. Run complete pipeline
-python diabetes_data_cleaner.py        # Step 1: Data preprocessing
-python encoding_pipeline.py            # Step 2: Advanced encoding
-python diabetes_regression_analysis.py # Step 3: Regression analysis
+# Step 2: Demographic filtering (removes problematic categories)
+python rimozione_ulteriori_filtri.py
+
+# Step 3: Statistical feature analysis (identifies significant features)
+python significativita.py
+
+# Step 4: ML dataset preparation (creates ML-ready dataset)
+python selezione_features_ml.py
+
+# Step 5: Model training and evaluation (trains logistic regression)
+python modello_regressione_logistica.py
 ```
 
-## Complete Usage Guide
+### Expected Runtime
+- **Total execution time**: ~5-10 minutes on standard hardware
+- **Most time-intensive**: `significativita.py` (statistical tests on 68k records)
 
-### Step 1: Data Preprocessing 
+### Verification
+After completion, verify the pipeline executed successfully:
 
-**Execute:** `python diabetes_data_cleaner.py`
+```bash
+# Check final model exists
+ls outputs/ml_models/logistic_model.pkl
 
-**What it does:**
-- Loads raw diabetes dataset (101,766 hospital encounters)
-- Removes non-predictive administrative columns
-- Handles missing values with authentic data approach (no imputation)
-- Eliminates patient duplicates (keeps first admission per patient)
+# View model performance summary
+cat outputs/ml_models/model_summary.txt
+
+# Check ML-ready dataset
+head -5 outputs/datasets_clean/third_clean/diabetes_ml_ready.csv
+```
+
+## Script Documentation
+
+### 1. `pulizia_dataset.py` - Data Preprocessing
+**Purpose**: Cleans raw medical data and performs basic preprocessing.
+
+**Input**:
+- `database/diabetic_data.csv` (101,766 records × 50 features)
+
+**Process**:
+- Removes administrative columns (encounter_id, weight, payer_code)
+- Eliminates missing values (rows with "?" entries)
+- Removes patient duplicates (keeps first admission per patient)
 - Converts age ranges to numerical midpoints
-- Creates binary readmission target variable
-
-**Files Generated:**
-
-#### `outputs/cleaned_data/diabetes_clean_no_encoding.csv`
-- **Size**: 37,764 patients × 40 variables
-- **Content**: Clean data ready for encoding (categorical variables preserved as text)
-- **Use Case**: Input for encoding pipeline
-- **Key Features**: No missing values, no patient duplicates, clinical variables preserved
-
-#### `outputs/cleaned_data/diabetes_regression_ready.csv`  
-- **Size**: 30,211 patients × 21 variables
-- **Content**: ML-ready with feature selection and scaling applied
-- **Use Case**: Direct use in traditional ML pipelines
-- **Key Features**: Top 20 features selected, standardized numerical values
-
-#### `outputs/cleaned_data/diabetes_ml_arrays.npz`
-- **Content**: Pre-split NumPy arrays (X_train, X_test, y_train, y_test)
-- **Use Case**: Direct loading into ML models without preprocessing
-- **Format**: Compressed NumPy binary format
-
-**How to read:**
-```python
-import pandas as pd
-import numpy as np
-
-# Read cleaned data
-df = pd.read_csv('outputs/cleaned_data/diabetes_clean_no_encoding.csv')
-print(f"Dataset shape: {df.shape}")
-print(f"Target distribution: {df['readmitted_binary'].value_counts()}")
-
-# Load ML arrays
-arrays = np.load('outputs/cleaned_data/diabetes_ml_arrays.npz')
-X_train, y_train = arrays['X_train'], arrays['y_train']
-```
-
-### Step 2: Advanced Encoding
-
-**Execute:** `python encoding_pipeline.py`
-
-**What it does:**
-- Analyzes categorical variables for optimal encoding strategy
-- Applies 4 different encoding approaches in parallel
-- Generates comprehensive analysis report with recommendations
-- Optimizes memory usage and prevents overfitting
-
-**Files Generated:**
-
-#### `outputs/encoded/diabetes_smart_onehot.csv`
-- **Size**: 37,764 patients × 84 variables  
-- **Strategy**: Intelligent one-hot encoding for variables ≤10 categories
-- **Use Case**: Statistical analysis requiring maximum interpretability
-- **Features**: Rare category consolidation, memory-optimized dtypes
-- **Best For**: ANOVA, chi-square tests, clinical interpretation
-
-#### `outputs/encoded/diabetes_robust_target.csv` **RECOMMENDED FOR ML**
-- **Size**: 37,764 patients × 40 variables
-- **Strategy**: Cross-validation target encoding (prevents overfitting)  
-- **Use Case**: Machine learning with high-cardinality categorical variables
-- **Features**: 5-fold CV encoding, out-of-fold predictions
-- **Best For**: Random Forest, Gradient Boosting, Logistic Regression
-
-#### `outputs/encoded/diabetes_advanced_encoding.csv`
-- **Size**: 37,764 patients × 53 variables
-- **Strategy**: Binary + hashing encoding for dimensionality reduction
-- **Use Case**: Memory-constrained environments, large-scale deployment
-- **Features**: Hash-based encoding, binary representations
-- **Best For**: Production systems, embedded applications
-
-#### `outputs/encoded/diabetes_ensemble_encoding.csv`
-- **Size**: 37,764 patients × 76 variables
-- **Strategy**: Adaptive optimal encoding (different strategy per variable)
-- **Use Case**: General-purpose optimal encoding
-- **Features**: Automatic strategy selection based on variable characteristics
-- **Best For**: Exploratory analysis, benchmark comparisons
-
-#### `outputs/encoded/encoding_analysis_report.csv`
-- **Size**: 29 variables × 7 metrics
-- **Content**: Detailed analysis of each categorical variable
-- **Use Case**: Understanding encoding decisions and variable characteristics
-
-**How to read:**
-```python
-import pandas as pd
-
-# For statistical analysis (most interpretable)
-df_stats = pd.read_csv('outputs/encoded/diabetes_smart_onehot.csv')
-
-# For machine learning (best performance)
-df_ml = pd.read_csv('outputs/encoded/diabetes_robust_target.csv')
-
-# Read encoding analysis
-analysis = pd.read_csv('outputs/encoded/encoding_analysis_report.csv')
-print("Encoding strategies used:")
-print(analysis[['Variable', 'Unique_Values', 'Recommended_Strategy']])
-```
-
-**Columns in analysis report:**
-- `Variable`: Categorical variable name
-- `Unique_Values`: Number of unique categories
-- `Missing_%`: Percentage of missing values  
-- `Most_Frequent_%`: Percentage of most common category
-- `Rare_Categories`: Count of categories with <20 occurrences
-- `Recommended_Strategy`: Optimal encoding method
-- `Memory_MB`: Memory usage in megabytes
-
-### Step 3: Regression Analysis
-
-**Execute:** `python diabetes_regression_analysis.py`
-
-**What it does:**
-- Loads optimal encoded dataset for regression
-- Tests 3 different regression models with cross-validation
-- Analyzes feature importance and model interpretability  
-- Generates comprehensive performance reports and clinical recommendations
-
-**Files Generated:**
-
-#### `outputs/regression_results/model_comparison_report.csv`
-- **Size**: 3 models × 4 metrics
-- **Content**: Performance comparison of all tested models
-- **Use Case**: Model selection and performance benchmarking
-
-**Columns explained:**
-- `Model`: Model name (Logistic Regression, Ridge Logistic, Random Forest)
-- `AUC_Test`: Area Under ROC Curve on test set (0.5-1.0, higher is better)
-- `AUC_CV_Mean`: Average AUC from 5-fold cross-validation
-- `AUC_CV_Std`: Standard deviation of CV scores (lower = more stable)
-
-#### `outputs/regression_results/feature_importance_report.csv`
-- **Size**: 37 features × 2 metrics
-- **Content**: Feature importance rankings from Random Forest model
-- **Use Case**: Understanding which clinical variables are most predictive
-
-**Columns explained:**
-- `feature`: Variable name from the dataset
-- `importance`: Importance score (0-1, higher = more predictive)
-
-**Clinical interpretation of top features:**
-- `num_lab_procedures`: Number of laboratory tests → complexity of care
-- `medical_specialty_target_enc`: Medical specialty → specialized care patterns
-- `num_medications`: Number of medications → comorbidity burden
-- `time_in_hospital`: Length of stay → illness severity
-- `age`: Patient age → frailty and risk factors
-
-#### `outputs/regression_results/regression_recommendations.txt`
-- **Content**: Clinical insights, model interpretation, and next steps
-- **Use Case**: Clinical decision support and model implementation guidance
-
-**How to read and interpret:**
-```python
-import pandas as pd
-
-# Read model comparison
-models = pd.read_csv('outputs/regression_results/model_comparison_report.csv')
-best_model = models.loc[models['AUC_Test'].idxmax()]
-print(f"Best model: {best_model['Model']} (AUC: {best_model['AUC_Test']:.4f})")
-
-# Read feature importance
-features = pd.read_csv('outputs/regression_results/feature_importance_report.csv')
-print("Top 5 most predictive features:")
-print(features.head())
-
-# Clinical risk interpretation
-with open('outputs/regression_results/regression_recommendations.txt', 'r') as f:
-    recommendations = f.read()
-    print(recommendations)
-```
-
-**AUC Score Interpretation:**
-- **0.9-1.0**: Excellent prediction capability
-- **0.8-0.9**: Good prediction capability  
-- **0.7-0.8**: Fair prediction capability
-- **0.6-0.7**: Poor but potentially useful
-- **0.5-0.6**: Little to no prediction capability
-
-**Typical results from this pipeline:**
-- **Expected AUC**: 0.62-0.68 (fair to good for real medical data)
-- **Best Model**: Usually Random Forest
-- **Key Predictors**: Laboratory procedures, medications, hospital stay duration
-
-## Data Quality Metrics
-
-### Raw Dataset Analysis
-- **Initial Records**: 101,766 hospital encounters
-- **Initial Variables**: 50 features (mix of numerical and categorical)
-- **Missing Data**: Varies by column (0-98% missing)
-- **Patient Duplicates**: 30,248 duplicate encounters removed
-
-### Processed Dataset Quality  
-- **Final Patients**: 37,764 unique patients (71,518 → 37,764 after encoding pipeline)
-- **Final Variables**: 29 categorical + 8 numerical features
-- **Missing Data**: Completely eliminated via strategic dropna approach
-- **Data Integrity**: 100% authentic medical records (no imputation bias)
-
-### Categorical Variable Distribution
-- **Total Categorical**: 29 variables analyzed
-- **Binary Variables (2 categories)**: 16 variables → Binary encoding
-- **Low Cardinality (3-10 categories)**: 12 variables → One-hot encoding  
-- **High Cardinality (>10 categories)**: 1 variable → Target/Hashing encoding
-
-## Advanced Technical Features
-
-### Cross-Validation Target Encoding
-Prevents overfitting in target encoding through out-of-fold predictions:
-
-```python
-# Implementation in encoding_pipeline.py
-kf = KFold(n_splits=5, shuffle=True, random_state=42)
-for train_idx, val_idx in kf.split(df):
-    target_means = df.iloc[train_idx].groupby(col)[target_col].mean()
-    df.loc[val_idx, f'{col}_target_enc'] = df.loc[val_idx, col].map(target_means)
-```
-
-### Memory Optimization
-Reduces memory usage by ~75% through intelligent data types:
-
-```python
-# Automatic optimization in encoding pipeline
-df_encoded = pd.get_dummies(df, dtype=np.int8)  # Instead of int64
-```
-
-### Adaptive Strategy Selection
-Automatically chooses optimal encoding based on variable characteristics:
-
-```python
-# Strategy selection logic
-if unique_count <= 2: strategy = 'binary'
-elif unique_count <= 10: strategy = 'onehot'  
-elif unique_count <= 50: strategy = 'target_encoding'
-else: strategy = 'hashing'
-```
-
-## Clinical Applications
-
-### Readmission Risk Prediction
-- **Primary Use**: Identify patients at high risk of 30-day readmission
-- **Clinical Value**: Enable targeted interventions and follow-up programs
-- **Implementation**: Integrate predictions into electronic health records
-
-### Population Health Management
-- **Risk Stratification**: Categorize patients by readmission risk levels
-- **Resource Allocation**: Prioritize high-risk patients for care management
-- **Quality Metrics**: Monitor and improve hospital readmission rates
-
-### Clinical Decision Support
-- **Real-Time Alerts**: Flag high-risk patients during discharge planning
-- **Care Pathways**: Recommend appropriate post-discharge care intensity
-- **Performance Monitoring**: Track prediction accuracy over time
-
-## Best Practices for Different Use Cases
-
-### For Statistical Analysis
-```python
-# Use most interpretable encoding
-df = pd.read_csv('outputs/encoded/diabetes_smart_onehot.csv')
-# Maintains clinical meaning, suitable for hypothesis testing
-```
-
-### For Machine Learning Development
-```python
-# Use robust target encoding
-df = pd.read_csv('outputs/encoded/diabetes_robust_target.csv')
-# Best balance of performance and overfitting prevention
-```
-
-### For Production Deployment
-```python
-# Use memory-efficient encoding
-df = pd.read_csv('outputs/encoded/diabetes_advanced_encoding.csv')  
-# Optimized for computational efficiency and storage
-```
-
-### For Exploratory Analysis
-```python
-# Use adaptive ensemble encoding
-df = pd.read_csv('outputs/encoded/diabetes_ensemble_encoding.csv')
-# Each variable optimally encoded for exploration
-```
-
-## Performance Benchmarks
-
-| Encoding Strategy | File Size | Variables | Memory Usage | ML Performance | Interpretability |
-|------------------|-----------|-----------|--------------|----------------|------------------|
-| Smart One-Hot    | 4.8 MB    | 84        | High         | Good           | Excellent        |
-| Robust Target    | 4.1 MB    | 40        | Low          | Excellent      | Good             |
-| Advanced Methods | 4.0 MB    | 53        | Low          | Good           | Fair             |
-| Ensemble Optimal | 5.9 MB    | 76        | Moderate     | Excellent      | Good             |
-
-## Troubleshooting Guide
-
-### Common Issues and Solutions
-
-#### Memory Errors
-```bash
-# Reduce memory usage
-python -c "import pandas as pd; pd.set_option('mode.chained_assignment', None)"
-# Or use advanced encoding method for smaller memory footprint
-```
-
-#### Encoding Failures  
-- **Issue**: New categorical values in production data
-- **Solution**: Ensure consistent preprocessing pipeline and data validation
-
-#### Missing Dependencies
-```bash
-# Install missing packages
-pip install --upgrade category-encoders scikit-learn pandas numpy
-```
-
-#### File Path Errors
-- **Issue**: Output directories don't exist
-- **Solution**: Scripts automatically create directories, but ensure write permissions
-
-#### Performance Issues
-- **Issue**: Slow processing on large datasets
-- **Solution**: Use `diabetes_advanced_encoding.csv` for memory-constrained environments
-
-## File Format Specifications
-
-### CSV Files
-- **Encoding**: UTF-8
-- **Separator**: Comma (,)
-- **Header**: First row contains column names
-- **Missing Values**: Eliminated during preprocessing (no NaN values)
-- **Data Types**: Automatically inferred by pandas
-
-### NumPy Files (.npz)
-- **Format**: Compressed NumPy binary
-- **Contents**: Multiple arrays stored in single file
-- **Access**: Use `np.load()` to access individual arrays
-- **Advantage**: Faster loading, smaller file size than CSV
-
-### Text Files (.txt)
-- **Format**: Plain text with structured sections
-- **Content**: Human-readable reports and recommendations
-- **Purpose**: Clinical interpretation and documentation
+- Applies one-hot encoding to categorical variables
+
+**Output**:
+- `outputs/datasets_clean/first_clean/diabetes_clean.csv` (69,668 records × 62 features)
+
+**Key Metrics**:
+- Records removed: 32,098 (31.6%)
+- Features expanded: 50 → 62 (categorical encoding)
+
+### 2. `rimozione_ulteriori_filtri.py` - Demographic Filtering
+**Purpose**: Filters out problematic demographic categories to improve data quality.
+
+**Input**:
+- `outputs/datasets_clean/first_clean/diabetes_clean.csv`
+
+**Process**:
+- Removes patients with race_Other = 1 (low representation)
+- Removes patients with gender_Unknown/Invalid = 1 (data quality issues)
+- Eliminates redundant columns (race_Other, gender_Unknown/Invalid, readmitted_>30)
+
+**Output**:
+- `outputs/datasets_clean/second_clean/diabetes_clean_filtered.csv` (68,490 records × 59 features)
+
+**Key Metrics**:
+- Records removed: 1,178 (1.7%)
+- Features reduced: 62 → 59
+
+### 3. `significativita.py` - Statistical Feature Analysis
+**Purpose**: Identifies statistically significant features using multiple methodologies.
+
+**Input**:
+- `outputs/datasets_clean/second_clean/diabetes_clean_filtered.csv`
+
+**Process**:
+- **Chi-square tests**: For binary features vs target
+- **T-test/Mann-Whitney U**: For continuous features vs target (with normality testing)
+- **Mutual Information**: Captures non-linear dependencies
+- **Cramér's V**: Measures effect size for categorical variables
+- Applies significance threshold: p-value < 0.05
+
+**Output**:
+- `outputs/dataset_pvalue/analisi_significativita_completa.csv` (complete analysis)
+- `outputs/dataset_pvalue/selected_features.txt` (32 significant features)
+
+**Key Metrics**:
+- Features analyzed: 58
+- Significant features found: 32 (p < 0.05)
+- Statistical methods: 6 different approaches
+
+### 4. `selezione_features_ml.py` - ML Dataset Preparation
+**Purpose**: Creates machine learning-ready dataset using statistically selected features.
+
+**Input**:
+- `outputs/datasets_clean/second_clean/diabetes_clean_filtered.csv`
+- `outputs/dataset_pvalue/selected_features.txt` (feature list)
+
+**Process**:
+- Automatically loads 32 significant features from statistical analysis
+- Extracts selected features + target variable
+- Generates comprehensive quality report
+- Creates feature type analysis (binary vs continuous)
+
+**Output**:
+- `outputs/datasets_clean/third_clean/diabetes_ml_ready.csv` (68,490 records × 33 columns)
+- `outputs/datasets_clean/third_clean/feature_selection_report.txt` (methodology report)
+
+**Key Metrics**:
+- Features selected: 32 + 1 target
+- Dimensionality reduction: 44.1% (59 → 33 columns)
+- Data quality: 0 missing values
+
+### 5. `modello_regressione_logistica.py` - Model Training
+**Purpose**: Trains and evaluates logistic regression model for readmission prediction.
+
+**Input**:
+- `outputs/datasets_clean/third_clean/diabetes_ml_ready.csv`
+
+**Process**:
+- **Data splitting**: 80% training, 20% testing (stratified)
+- **Feature scaling**: StandardScaler normalization
+- **Model training**: Logistic regression with balanced class weights
+- **Evaluation**: Multiple metrics (accuracy, precision, recall, F1, AUC-ROC)
+- **Validation**: 5-fold cross-validation
+- **Overfitting detection**: Train vs test performance comparison
+
+**Output**:
+- `outputs/ml_models/logistic_model.pkl` (trained model)
+- `outputs/ml_models/scaler.pkl` (feature preprocessor)
+- `outputs/ml_models/metrics.csv` (performance metrics)
+- `outputs/ml_models/feature_importance.csv` (feature coefficients)
+- `outputs/ml_models/model_summary.txt` (human-readable report)
+- `outputs/ml_models/model_performance.png` (visualizations)
+
+**Key Metrics**:
+- **AUC-ROC**: 0.609 (moderate discriminative ability)
+- **Accuracy**: 61.5% (train), 60.9% (test)
+- **Overfitting**: Minimal (0.5% difference)
+- **Cross-validation**: 0.613 ± 0.007
+
+## Data Flow
+
+### Progressive Data Transformation
+
+| Stage | Script | Input Size | Output Size | Key Transformation |
+|-------|--------|------------|-------------|-------------------|
+| **Raw** | - | 101,766 × 50 | - | Original hospital records |
+| **Clean** | `pulizia_dataset.py` | 101,766 × 50 | 69,668 × 62 | Preprocessing + encoding |
+| **Filter** | `rimozione_ulteriori_filtri.py` | 69,668 × 62 | 68,490 × 59 | Demographic filtering |
+| **Analyze** | `significativita.py` | 68,490 × 59 | 32 features | Statistical significance |
+| **Prepare** | `selezione_features_ml.py` | 68,490 × 59 | 68,490 × 33 | ML dataset creation |
+| **Train** | `modello_regressione_logistica.py` | 68,490 × 33 | Model | ML training |
+
+### Feature Selection Process
+
+1. **Initial Features**: 50 raw medical variables
+2. **After Encoding**: 62 features (categorical expansion)
+3. **After Filtering**: 59 features (demographic cleanup)
+4. **Statistical Analysis**: 32 significant features (p < 0.05)
+5. **Final Model**: 32 features + 1 target variable
+
+## Results
+
+### Model Performance
+- **AUC-ROC**: 0.609 (acceptable for medical prediction)
+- **Accuracy**: 60.9% on test set
+- **Precision**: 65.8% (good positive prediction accuracy)
+- **Recall**: 66.3% (good sensitivity for readmission detection)
+- **Model Stability**: Excellent (minimal overfitting)
+
+### Top Risk Factors (Protective Effects)
+1. **number_inpatient** (-0.285): Prior inpatient admissions reduce readmission risk
+2. **number_emergency** (-0.160): More emergency visits are protective
+3. **diabetesMed_Yes** (-0.141): Diabetes medication reduces readmission risk
+
+### Clinical Interpretation
+- **Paradoxical findings**: Higher healthcare utilization appears protective
+- **Possible explanation**: More engaged patients receive better care
+- **Clinical value**: Model identifies patients needing intervention
+
+### Data Quality Metrics
+- **Missing values**: 0% (completely eliminated)
+- **Duplicate patients**: Removed (by patient_nbr)
+- **Class balance**: 59.7% readmitted vs 40.3% not readmitted
+- **Feature reduction**: 68% reduction while maintaining predictive power
 
 ## Contributing
 
 ### Development Guidelines
-- Follow PEP 8 style guidelines
-- Include comprehensive docstrings
-- Maintain backward compatibility
-- Add unit tests for new features
+1. **Code Style**: Follow PEP 8 style guidelines
+2. **Documentation**: Include comprehensive docstrings
+3. **Testing**: Add unit tests for new features
+4. **Reproducibility**: Set random seeds for consistency
 
-### Testing
-```bash
-# Run tests (if implemented)
-pytest tests/
+### Adding New Features
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-# Validate pipeline integrity
-python diabetes_data_cleaner.py
-python encoding_pipeline.py  
-python diabetes_regression_analysis.py
-```
-
-## Citation
-
-If you use this pipeline in your research, please cite:
-
-```bibtex
-@misc{diabetes_encoding_pipeline,
-  title={Advanced Diabetes Data Processing Pipeline},
-  author={Healthcare Analytics Team},
-  year={2025},
-  publisher={GitHub},
-  url={https://github.com/your-repo/diabetes-pipeline}
-}
-```
+### Reporting Issues
+Please use the GitHub issue tracker to report bugs or request features.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-- Original dataset from UCI Machine Learning Repository  
+- Original dataset from UCI Machine Learning Repository
 - Inspired by best practices in healthcare data preprocessing
 - Built with modern data science libraries and methodologies
 
+## Contact
+
+For questions, collaborations, or support:
+- **Issues**: [GitHub Issues](https://github.com/your-username/diabetes-readmission-pipeline/issues)
+- **Email**: your.email@domain.com
+- **Documentation**: This README and inline code comments
+
 ---
 
-**Contact**: For questions or collaboration opportunities, please open an issue on GitHub.
-
-**Version**: 2.1.0 | **Last Updated**: January 2025
+**Version**: 1.0.0 | **Last Updated**: September 2025 | **Python**: 3.8+

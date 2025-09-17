@@ -9,7 +9,11 @@
       "Bash(del encoding_script.py)",
       "Bash(ren:*)",
       "Bash(dir:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Read(//c/Users/ludov/Desktop/**)",
+      "Bash(del diabetes_clean_filtered.csv)"
     ],
     "deny": [],
     "ask": []

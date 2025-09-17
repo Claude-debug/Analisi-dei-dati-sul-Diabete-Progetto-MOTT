@@ -1,0 +1,96 @@
+REPORT SELEZIONE FEATURES PER MACHINE LEARNING
+============================================================
+
+TRASFORMAZIONE DATASET:
+- Dataset input: (68490, 59)
+- Dataset output: (68490, 33)
+- Riduzione colonne: 59 → 33 (-26)
+- Percentuale riduzione: 44.1%
+
+FEATURES SELEZIONATE (32 + target):
+----------------------------------------
+
+FEATURES SIGNIFICATIVE (ordinate per p-value):
+   1. number_inpatient          (continua)
+   2. number_emergency          (continua)
+   3. number_outpatient         (continua)
+   4. diabetesMed_Yes           (binaria)
+   5. time_in_hospital          (continua)
+   6. age                       (continua)
+   7. num_medications           (continua)
+   8. num_lab_procedures        (continua)
+   9. change_No                 (binaria)
+  10. insulin_No                (binaria)
+  11. num_procedures            (continua)
+  12. glipizide_No              (binaria)
+  13. race_Caucasian            (binaria)
+  14. glipizide_Steady          (binaria)
+  15. rosiglitazone_Steady      (binaria)
+  16. rosiglitazone_No          (binaria)
+  17. repaglinide_Steady        (binaria)
+  18. insulin_Up                (binaria)
+  19. repaglinide_No            (binaria)
+  20. race_Asian                (binaria)
+  21. metformin_No              (binaria)
+  22. pioglitazone_No           (binaria)
+  23. gender_Male               (binaria)
+  24. metformin_Steady          (binaria)
+  25. race_Hispanic             (binaria)
+  26. pioglitazone_Steady       (binaria)
+  27. glyburide_No              (binaria)
+  28. acarbose_Steady           (binaria)
+  29. glyburide_Steady          (binaria)
+  30. pioglitazone_Up           (binaria)
+  31. glipizide_Up              (binaria)
+  32. miglitol_No               (binaria)
+
+TARGET VARIABLE:
+- readmitted_NO
+
+QUALITA' DATI:
+- Valori mancanti: 0
+- Righe duplicate: 185
+
+DISTRIBUZIONE TARGET:
+- readmitted_NO=1: 40880 righe (59.7%)
+- readmitted_NO=0: 27610 righe (40.3%)
+
+TIPOLOGIE FEATURES:
+- Features binarie: 24
+  * diabetesMed_Yes
+  * change_No
+  * insulin_No
+  * glipizide_No
+  * race_Caucasian
+  * glipizide_Steady
+  * rosiglitazone_Steady
+  * rosiglitazone_No
+  * repaglinide_Steady
+  * insulin_Up
+  * repaglinide_No
+  * race_Asian
+  * metformin_No
+  * pioglitazone_No
+  * gender_Male
+  * metformin_Steady
+  * race_Hispanic
+  * pioglitazone_Steady
+  * glyburide_No
+  * acarbose_Steady
+  * glyburide_Steady
+  * pioglitazone_Up
+  * glipizide_Up
+  * miglitol_No
+- Features continue: 8
+  * number_inpatient
+  * number_emergency
+  * number_outpatient
+  * time_in_hospital
+  * age
+  * num_medications
+  * num_lab_procedures
+  * num_procedures
+
+FILE GENERATI:
+- Dataset ML-ready: diabetes_ml_ready.csv
+- Questo report: feature_selection_report.txt

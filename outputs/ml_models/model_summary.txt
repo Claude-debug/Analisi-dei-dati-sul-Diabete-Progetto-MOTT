@@ -1,0 +1,32 @@
+MODELLO REGRESSIONE LOGISTICA - SUMMARY
+==================================================
+
+PERFORMANCE TRAIN SET:
+- accuracy: 0.5947
+- precision: 0.6612
+- recall: 0.6581
+- f1_score: 0.6596
+- auc_roc: 0.6147
+
+PERFORMANCE TEST SET:
+- accuracy: 0.5940
+- precision: 0.6606
+- recall: 0.6575
+- f1_score: 0.6591
+- auc_roc: 0.6093
+
+DIAGNOSI OVERFITTING:
+- accuracy: +0.0007 (OK)
+- precision: +0.0006 (OK)
+- recall: +0.0006 (OK)
+- f1_score: +0.0006 (OK)
+- auc_roc: +0.0053 (OK)
+
+CROSS-VALIDATION AUC: 0.6127 ± 0.0073
+
+TOP 5 FEATURES:
+1. number_inpatient (PROTETTIVO): -0.2852
+2. number_emergency (PROTETTIVO): -0.1600
+3. diabetesMed_Yes (PROTETTIVO): -0.1411
+4. rosiglitazone_Steady (PROTETTIVO): -0.1325
+5. metformin_No (PROTETTIVO): -0.1210
