@@ -1,0 +1,11 @@
+age_group,risk_level,top_predictor,model_performance
+[0-10),RISCHIO BASSO,diag_1,Fair
+[10-20),RISCHIO MODERATO,num_lab_procedures,Good
+[20-30),RISCHIO MODERATO,number_inpatient,Good
+[30-40),RISCHIO MODERATO,number_inpatient,Good
+[40-50),RISCHIO MODERATO,number_inpatient,Fair
+[50-60),RISCHIO MODERATO,number_inpatient,Fair
+[60-70),RISCHIO MODERATO,number_inpatient,Fair
+[70-80),ALTO RISCHIO,number_inpatient,Fair
+[80-90),ALTO RISCHIO,discharge_disposition_id,Fair
+[90-100),RISCHIO MODERATO,discharge_disposition_id,Poor

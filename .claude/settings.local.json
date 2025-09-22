@@ -13,7 +13,12 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Read(//c/Users/ludov/Desktop/**)",
-      "Bash(del diabetes_clean_filtered.csv)"
+      "Bash(del diabetes_clean_filtered.csv)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []
