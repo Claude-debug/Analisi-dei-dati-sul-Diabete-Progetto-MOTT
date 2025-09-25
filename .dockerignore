@@ -1,0 +1,46 @@
+# Docker ignore file for Diabetes Prediction Pipeline
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Temporary files
+*.tmp
+*.log
+*.backup
+
+# Large output files (preserve structure but ignore large datasets if needed)
+# outputs/datasets_clean/cluster/terzo_metodo/*.csv
+
+# Documentation (optional - remove if you want docs in container)
+*.md
+!README.md
+
+# Development files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Windows specific
+desktop.ini

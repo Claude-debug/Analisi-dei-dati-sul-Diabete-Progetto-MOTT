@@ -1,0 +1,4 @@
+Metodo,Numero_Gruppi,Varianza_Dimensioni
+Originale (10 fasce),10,6866.431222500763
+Age-Based Stratification (4 fasce),4,12455.407139070163
+Decision Tree (4 cluster),4,15850.805857537129

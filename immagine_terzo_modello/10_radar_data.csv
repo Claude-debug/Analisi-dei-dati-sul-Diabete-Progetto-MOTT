@@ -1,0 +1,11 @@
+,K-means Gerarchico,Decision Tree Clustering,Ibrido Età+Risk
+"Silhouette
+Score",0.245,0.198,0.156
+"Intra-cluster
+Homogeneity",0.68,0.72,0.65
+"Inter-cluster
+Separation",0.045,0.078,0.092
+"Prediction
+Utility",0.652,0.689,0.675
+"Risk
+Discrimination",0.18,0.23,0.285

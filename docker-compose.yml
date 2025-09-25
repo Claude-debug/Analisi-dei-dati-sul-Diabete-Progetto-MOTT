@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  diabetes-pipeline:
+    build: .
+    container_name: diabetes-prediction-pipeline
+    volumes:
+      # Mount dei dataset se disponibili localmente
+      - ./database:/app/database:ro
+      - ./outputs:/app/outputs
+      # Mount per sviluppo (opzionale)
+      - ./metodi:/app/metodi
+      - ./test:/app/test
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["python", "test/simple_test.py"]
+    networks:
+      - diabetes-net
+
+  # Servizio per clustering comparison
+  clustering-analysis:
+    build: .
+    container_name: diabetes-clustering-analysis
+    volumes:
+      - ./database:/app/database:ro
+      - ./outputs:/app/outputs
+      - ./metodi:/app/metodi
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["python", "metodi/cluster/clean_dataset_cluster.py"]
+    depends_on:
+      - diabetes-pipeline
+    networks:
+      - diabetes-net
+
+  # Servizio per sistema integrato
+  integrated-system:
+    build: .
+    container_name: diabetes-integrated-system
+    volumes:
+      - ./database:/app/database:ro
+      - ./outputs:/app/outputs
+      - ./metodi:/app/metodi
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["python", "metodi/terzo_metodo/hybrid_ml_clinical_rules_integrated.py"]
+    depends_on:
+      - clustering-analysis
+    networks:
+      - diabetes-net
+
+  # Servizio per test completi
+  full-test-suite:
+    build: .
+    container_name: diabetes-test-suite
+    volumes:
+      - ./database:/app/database:ro
+      - ./outputs:/app/outputs
+      - ./metodi:/app/metodi
+      - ./test:/app/test
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: ["python", "test/simple_test.py"]
+    depends_on:
+      - diabetes-pipeline
+    networks:
+      - diabetes-net
+
+networks:
+  diabetes-net:
+    driver: bridge
+
+volumes:
+  # Volume persistente per output
+  diabetes_outputs:
+    driver: local

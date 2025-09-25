@@ -1,0 +1,5 @@
+age_group_4,mean,count,clinical_complexity,high_risk_patient,num_medications,time_in_hospital
+Giovani (0-40),31.71650055370986,4515,0.13,0.14,12.19,3.46
+Adulti (40-60),36.52295285359802,19344,0.26,0.16,15.71,3.93
+Anziani (60-80),41.91395961369622,34170,0.32,0.19,16.53,4.4
+Molto Anziani (80-100),42.36044184150048,13489,0.31,0.21,14.79,4.79

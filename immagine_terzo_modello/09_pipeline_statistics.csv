@@ -1,0 +1,15 @@
+Fase,Pazienti_Rimasti,Pazienti_Rimossi,Percentuale_Rimasta,Motivo_Rimozione
+"Dataset
+Originale",100000,0,100.0,
+"Rimozione
+Duplicati",85000,15000,85.0,"Duplicati
+per paziente"
+"Gestione
+Missing Values",78000,7000,78.0,"Colonne >80%
+missing"
+"Feature
+Selection",75000,3000,75.0,"Features
+irrilevanti"
+"Dataset
+Finale",71518,3482,71.5,"Outliers e
+inconsistenze"

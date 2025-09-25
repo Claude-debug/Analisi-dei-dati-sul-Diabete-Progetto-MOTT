@@ -1,0 +1,4 @@
+dataset,accuracy,f1_score,roc_auc,ml_baseline_accuracy,improvement,method_usage,total_tested,features_used,cluster_columns
+kmeans,0.5755395683453237,0.3808095952023988,0.5818266939053456,0.5755395683453237,0.0,{'ML Model': 973},973,9,['final_cluster']
+decision_tree,0.5806783144912642,0.3419354838709677,0.588661899897855,0.5806783144912642,0.0,{'ML Model': 973},973,9,['dt_cluster']
+hybrid,0.5817060637204522,0.44925575101488496,0.5827502553626149,0.5817060637204522,0.0,{'ML Model': 973},973,9,['hybrid_cluster']

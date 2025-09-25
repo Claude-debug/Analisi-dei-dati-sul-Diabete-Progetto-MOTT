@@ -18,7 +18,8 @@
       "Bash(cp:*)",
       "Bash(rm:*)",
       "Bash(git add:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(del alternative_approaches_evaluation.py evidence_based_improvements.py improved_hybrid_model.py final_hybrid_test.py test_hybrid_fixes.py analyze_decision_tree_clusters.py)"
     ],
     "deny": [],
     "ask": []
